@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f6f8fa;
+            margin: 0;
+        }
+        .catalog-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .catalog-title {
+            font-size: 2.4em;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1em;
+            text-align: center;
+        }
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem 1.3rem;
+        }
+        .good-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 18px 0 rgba(30,42,61,.09);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+        .goods-imgbox {
+            background: #f2f2f2;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .goods-imgbox img {
+            width: 100%;
+            max-width: 220px;
+            max-height: 160px;
+            object-fit: contain;
+        }
+        .good-card-body {
+            padding: 18px 16px 16px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .goods-title {
+            font-size: 1.17em;
+            font-weight: 600;
+            color: #222;
+            min-height: 2em;
+            margin-bottom: 0.35em;
+        }
+        .goods-desc {
+            color: #555;
+            font-size: 0.97em;
+            margin-bottom: 1.2em;
+            flex: 1;
+        }
+        .goods-price {
+            font-size: 1.22em;
+            font-weight: 600;
+            color: #c9184a;
+            margin-bottom: 1.2em;
+        }
+        .card-btn {
+            display: block;
+            width: 100%;
+            padding: 0.7em 0;
+            background: linear-gradient(90deg, #ff4b2b 0%, #ff416c 90%);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 1px 6px rgba(255,65,108,0.07);
+            cursor: pointer;
+            transition: background 0.17s;
+            text-decoration: none;
+            text-align: center;
+        }
+        .card-btn:hover {
+            background: linear-gradient(90deg, #ff416c 10%, #c9184a 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="catalog-container">
+        <div class="catalog-title">Каталог товаров</div>
+        <div class="goods-grid">
+            {% for item in items %}
+            <div class="good-card">
+                <div class="goods-imgbox">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/220x160?text=Фото+нет" alt="нет-изображения">
+                    {% endif %}
+                </div>
+                <div class="good-card-body">
+                    <div class="goods-title">{{ item.name }}</div>
+                    <div class="goods-desc">{{ item.description|truncatechars:70 }}</div>
+                    <div class="goods-price">{{ item.price|floatformat:2 }} {{ item.currency_symbol }}</div>
+                    <a href="{% url 'item_detail' item.id %}" class="card-btn">Подробнее</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
